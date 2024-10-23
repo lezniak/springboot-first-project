@@ -34,4 +34,8 @@ public class Student {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String ToString(){
+        return id+firstName+" "+lastName;
+    }
 }

@@ -1,10 +1,8 @@
 package net.firstproject.springbootapi.controller;
 
 import net.firstproject.springbootapi.bean.Student;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +50,12 @@ public class StudentController {
                                           @RequestParam("firstName") String firstName,
                                           @RequestParam("lastName") String lastName){
         return new Student(id,firstName,lastName);
+    }
+
+    @PostMapping("students/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Student createStudent(@RequestBody Student student){
+        System.out.println(student.ToString());
+        return student;
     }
 }
