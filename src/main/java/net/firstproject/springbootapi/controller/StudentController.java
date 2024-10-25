@@ -58,4 +58,18 @@ public class StudentController {
         System.out.println(student.ToString());
         return student;
     }
+
+
+    @PutMapping("students/{id}/update")
+    public Student updateStudent(@RequestBody Student student,
+                                 @PathVariable("id") int id){
+        System.out.println(id+student.ToString());
+        return student;
+    }
+
+    @DeleteMapping("students/{id}/delete")
+    public int updateStudent(@PathVariable("id") int id){
+        System.out.println(id);
+        return id;
+    }
 }
