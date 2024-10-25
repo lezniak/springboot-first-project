@@ -1,7 +1,9 @@
 package net.firstproject.springbootapi.controller;
 
 import net.firstproject.springbootapi.bean.Student;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,65 +13,67 @@ import java.util.List;
 public class StudentController {
 
     @GetMapping("student")
-    private Student getStudent(){
-        return new Student(
+    private ResponseEntity<Student> getStudent() {
+        Student student = new Student(
                 1,
                 "Dan",
                 "Lez"
         );
+        //return new ResponseEntity<Student>(student,HttpStatus.OK);
+        return ResponseEntity.ok().header("Custom-header", "test").body(student);
     }
+
     @GetMapping("students")
-    private List<Student> getStudents(){
+    private ResponseEntity<List<Student>> getStudents() {
         ArrayList<Student> array = new ArrayList<>();
 
-        for (int i = 0;i <10;i++){
+        for (int i = 0; i < 10; i++) {
             array.add(new Student(
                     i,
-                    "Dan "+i,
-                    "Lez"+i
+                    "Dan " + i,
+                    "Lez" + i
             ));
         }
-        return array;
+        return ResponseEntity.ok(array);
     }
 
     @GetMapping("students/{id}")
-    public Student studentPathVariable(@PathVariable("id") int id){
-        return new Student(id,"dan","lez");
+    public ResponseEntity<Student> studentPathVariable(@PathVariable("id") int id) {
+        return ResponseEntity.ok(new Student(id, "dan", "lez"));
     }
 
     @GetMapping("students/{id}/{firstName}/{lastName}")
-    public Student studentPathVariableFull(@PathVariable("id") int id,
+    public ResponseEntity<Student> studentPathVariableFull(@PathVariable("id") int id,
                                            @PathVariable("firstName") String firstName,
                                            @PathVariable("lastName") String lastName
-    ){
-        return new Student(id,firstName,lastName);
+    ) {
+        return ResponseEntity.ok(new Student(id, firstName, lastName));
     }
 
     @GetMapping("students/query")
-    public Student studentRequestVariable(@RequestParam int id,
+    public ResponseEntity<Student> studentRequestVariable(@RequestParam int id,
                                           @RequestParam("firstName") String firstName,
-                                          @RequestParam("lastName") String lastName){
-        return new Student(id,firstName,lastName);
+                                          @RequestParam("lastName") String lastName) {
+        return ResponseEntity.ok(new Student(id, firstName, lastName));
     }
 
     @PostMapping("students/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Student createStudent(@RequestBody Student student){
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         System.out.println(student.ToString());
-        return student;
+        return new ResponseEntity<>(student,HttpStatus.CREATED);
     }
 
 
     @PutMapping("students/{id}/update")
-    public Student updateStudent(@RequestBody Student student,
-                                 @PathVariable("id") int id){
-        System.out.println(id+student.ToString());
-        return student;
+    public ResponseEntity<Student> updateStudent(@RequestBody Student student,
+                                 @PathVariable("id") int id) {
+        System.out.println(id + student.ToString());
+        return ResponseEntity.ok(student);
     }
 
     @DeleteMapping("students/{id}/delete")
-    public int updateStudent(@PathVariable("id") int id){
+    public ResponseEntity<String> updateStudent(@PathVariable("id") int id) {
         System.out.println(id);
-        return id;
+        return new ResponseEntity<>("Delete completed",HttpStatus.OK);
     }
 }
