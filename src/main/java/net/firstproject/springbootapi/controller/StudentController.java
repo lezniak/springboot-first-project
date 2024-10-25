@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("students/")
 public class StudentController {
 
     @GetMapping("student")
@@ -23,7 +24,7 @@ public class StudentController {
         return ResponseEntity.ok().header("Custom-header", "test").body(student);
     }
 
-    @GetMapping("students")
+    @GetMapping
     private ResponseEntity<List<Student>> getStudents() {
         ArrayList<Student> array = new ArrayList<>();
 
@@ -37,12 +38,12 @@ public class StudentController {
         return ResponseEntity.ok(array);
     }
 
-    @GetMapping("students/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Student> studentPathVariable(@PathVariable("id") int id) {
         return ResponseEntity.ok(new Student(id, "dan", "lez"));
     }
 
-    @GetMapping("students/{id}/{firstName}/{lastName}")
+    @GetMapping("{id}/{firstName}/{lastName}")
     public ResponseEntity<Student> studentPathVariableFull(@PathVariable("id") int id,
                                            @PathVariable("firstName") String firstName,
                                            @PathVariable("lastName") String lastName
@@ -50,28 +51,28 @@ public class StudentController {
         return ResponseEntity.ok(new Student(id, firstName, lastName));
     }
 
-    @GetMapping("students/query")
+    @GetMapping("query")
     public ResponseEntity<Student> studentRequestVariable(@RequestParam int id,
                                           @RequestParam("firstName") String firstName,
                                           @RequestParam("lastName") String lastName) {
         return ResponseEntity.ok(new Student(id, firstName, lastName));
     }
 
-    @PostMapping("students/create")
+    @PostMapping("create")
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         System.out.println(student.ToString());
         return new ResponseEntity<>(student,HttpStatus.CREATED);
     }
 
 
-    @PutMapping("students/{id}/update")
+    @PutMapping("{id}/update")
     public ResponseEntity<Student> updateStudent(@RequestBody Student student,
                                  @PathVariable("id") int id) {
         System.out.println(id + student.ToString());
         return ResponseEntity.ok(student);
     }
 
-    @DeleteMapping("students/{id}/delete")
+    @DeleteMapping("{id}/delete")
     public ResponseEntity<String> updateStudent(@PathVariable("id") int id) {
         System.out.println(id);
         return new ResponseEntity<>("Delete completed",HttpStatus.OK);
